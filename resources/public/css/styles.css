@@ -1,0 +1,35 @@
+/* Use a simple flexbox layout. */
+#app > * {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+#app h1 {
+    padding: 0 1rem;
+    width: 100%;
+}
+
+#app > * > div {
+    flex: 1 0 10rem;
+    margin: 1rem;
+}
+
+#app > * > div:last-child textarea {
+    margin-top: 2.5rem;
+}
+
+input[type="file"] {
+    display: block;
+    margin-top: 0.5rem;
+    height: 2rem;
+}
+
+label {
+    margin-right: 0.5rem;
+}
+
+textarea {
+    height: 10rem;
+    width: 100%;
+}
