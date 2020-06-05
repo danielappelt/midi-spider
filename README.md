@@ -61,7 +61,8 @@ Use your preferred editor or IDE that supports Clojure/ClojureScript development
 1. Install [JDK 8 or later](https://openjdk.java.net/install/) (Java Development Kit)
 2. Install [Leiningen](https://leiningen.org/#install) (Clojure/ClojureScript project task &
 dependency management)
-3. Install [Node.js](https://nodejs.org/) (JavaScript runtime environment)
+3. Install [Node.js](https://nodejs.org/) (JavaScript runtime environment) which should include
+   [NPM](https://docs.npmjs.com/cli/npm) or if your Node.js installation does not include NPM also install it.
 4. Install [karma-cli](https://www.npmjs.com/package/karma-cli) (test runner):
     ```sh
     npm install -g karma-cli
@@ -75,9 +76,9 @@ dependency management)
         export CHROME_BIN=chromium-browser
        ```
 7. Clone this repo and open a terminal in the `midi-spider` project root directory
-8. Download project dependencies:
+8. (Optional) Download project dependencies:
     ```sh
-    lein deps && npm install
+    lein deps
     ```
 
 ### Browser Setup

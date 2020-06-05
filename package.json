@@ -1,13 +1,14 @@
 {
+  "name": "midi-spider",
   "dependencies": {
     "react": "16.13.0",
     "react-dom": "16.13.0"
   },
   "devDependencies": {
-    "shadow-cljs": "2.8.109",
     "karma": "4.4.1",
     "karma-chrome-launcher": "3.1.0",
     "karma-cljs-test": "0.1.0",
-    "karma-junit-reporter": "2.0.1"
+    "karma-junit-reporter": "2.0.1",
+    "shadow-cljs": "2.9.3"
   }
 }
