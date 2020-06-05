@@ -1,13 +1,12 @@
 (ns midi-spider.core
   (:require
-   [reagent.core :as reagent]
    [reagent.dom :as rdom]
    [re-frame.core :as re-frame]
-   [midi-spider.events :as events]
-   [midi-spider.views :as views]
    [midi-spider.config :as config]
+   [midi-spider.events :as events]
+   [midi-spider.routes :as routes]
+   [midi-spider.views :as views]
    ))
-
 
 (defn dev-setup []
   (when config/debug?
@@ -29,4 +28,5 @@
 (defn init []
   (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)
+  (routes/init)
   (mount-root))

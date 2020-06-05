@@ -1,7 +1,8 @@
 (ns midi-spider.db)
 
 (def default-db
-  {:inputs []
+  {:active-panel :midi-spider.views/home
+   :inputs []
    :input #js {}
    :in-buffer []
    :outputs []

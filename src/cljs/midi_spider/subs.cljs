@@ -3,6 +3,11 @@
    [clojure.string :as str]
    [re-frame.core :as re-frame]))
 
+(re-frame/reg-sub
+ ::active-panel
+ (fn [db]
+   (:active-panel db)))
+
 (defn int->hex [n]
   (str/join (take-last 2 (str "0" (.toString n 16)))))
 

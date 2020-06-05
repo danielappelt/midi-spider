@@ -10,6 +10,12 @@
     width: 100%;
 }
 
+#app > * > a {
+    position: absolute;
+    right: 1rem;
+    top: 0.5rem;
+}
+
 #app > * > div {
     flex: 1 0 10rem;
     margin: 1rem;
