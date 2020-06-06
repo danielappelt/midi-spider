@@ -1,8 +1,35 @@
 # MIDI Spider
 
-A [re-frame](https://github.com/day8/re-frame) application designed to facilitate simple interaction with MIDI devices.
+MIDI Spider is a web application that enables easy data exchange with MIDI devices.
+It can be used as a simple sysex librarian.
+
+## Features
+
+* Send arbitrary data to MIDI devices
+  - Allows loading of binary sysex files (*.syx) or manual data entry
+* Monitor incoming data from MIDI devices
+* Data is represented in hexadecimal notation
+* Two-pane layout with selectable MIDI input and output
+* No installation needed - runs in the browser
+  - For now mainly Blink- / Chrome-based browsers (see [state of Web MIDI support](https://caniuse.com/#feat=midi))
+  - Chrome / Chromium on Linux allows non-blocking access to MIDI devices
+
+### Planned Features
+
+* Allow to save data
+* REPL-like alternative view
+* Allow separate views for different MIDI devices
+* Create MIDI device / sysex view from Clojure spec data
+* Allow loading of "external" / JS views
+* More sysex librarian features
 
 ## Getting Started
+
+* Open the application in your browser.. _TODO_
+
+## Technical Details
+
+MIDI Spider is a [re-frame](https://github.com/day8/re-frame) application.
 
 ### Project Overview
 
@@ -16,6 +43,7 @@ A [re-frame](https://github.com/day8/re-frame) application designed to facilitat
   [FAQs](https://github.com/day8/re-frame/blob/master/docs/FAQs/README.md)) ->
   [Reagent](https://github.com/reagent-project/reagent) ->
   [React](https://github.com/facebook/react)
+  - Client-side routing: [bidi](https://github.com/juxt/bidi)
 * Build tools
   - Project task & dependency management: [Leiningen](https://github.com/technomancy/leiningen)
   - CLJS compilation, REPL, & hot reload: [`shadow-cljs`](https://github.com/thheller/shadow-cljs)
