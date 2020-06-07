@@ -25,7 +25,7 @@ It can be used as a simple sysex librarian.
 
 ## Getting Started
 
-* Open the application in your browser.. _TODO_
+* Open [the application](https://danielappelt.github.io/midi-spider/) in your browser..
 
 ## Technical Details
 
