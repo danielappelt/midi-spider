@@ -71,7 +71,13 @@
 (re-frame/reg-event-db
  ::midi-message
  (fn [db [_ data]]
-   (assoc db :in-buffer (maplike->seq data))))
+   ;; Free memory (https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL#Memory_management)
+   (.revokeObjectURL js/URL (:download-url db))
+   (assoc db
+          :in-buffer (maplike->seq data)
+          :download-url (.createObjectURL js/URL
+                                          (js/Blob. #js [data]
+                                                    #js {:type "application/octet-stream"})))))
 
 (re-frame/reg-event-fx
  ::select-output

@@ -5,6 +5,7 @@
    :inputs []
    :input #js {}
    :in-buffer []
+   :download-url nil
    :outputs []
    :output #js {}
    ;; Sysex device inquiry

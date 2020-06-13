@@ -46,7 +46,9 @@
    [:div
     (midi-ports "Input:" ::subs/inputs ::events/select-input)
     [:textarea {:value @(re-frame/subscribe [::subs/in-buffer-text])
-                :readOnly true}]]])
+                :readOnly true}]
+    [:a {:href @(re-frame/subscribe [::subs/download-url])
+         :download "download.syx"} "Download"]]])
 
 (defn about-panel []
   [:div

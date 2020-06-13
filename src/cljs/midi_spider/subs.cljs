@@ -29,6 +29,11 @@
    (:in-buffer db)))
 
 (re-frame/reg-sub
+ ::download-url
+ (fn [db]
+   (:download-url db)))
+
+(re-frame/reg-sub
  ::outputs
  (fn [db]
    (:outputs db)))

@@ -39,3 +39,11 @@ textarea {
     height: 10rem;
     width: 100%;
 }
+
+a[download] {
+    opacity: 0.33;
+}
+
+a[download][href] {
+    opacity: 1;
+}
