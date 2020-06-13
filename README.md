@@ -8,6 +8,7 @@ It can be used as a simple sysex librarian.
 * Send arbitrary data to MIDI devices
   - Allows loading of binary sysex files (*.syx) or manual data entry
 * Monitor incoming data from MIDI devices
+  - Download last received data as binary file
 * Data is represented in hexadecimal notation
 * Two-pane layout with selectable MIDI input and output
 * No installation needed - runs in the browser
@@ -16,7 +17,6 @@ It can be used as a simple sysex librarian.
 
 ### Planned Features
 
-* Allow to save data
 * REPL-like alternative view
 * Allow separate views for different MIDI devices
 * Create MIDI device / sysex view from Clojure spec data
