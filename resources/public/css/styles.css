@@ -1,13 +1,7 @@
-/* Use a simple flexbox layout. */
-#app > * {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-}
-
-#app h1 {
-    padding: 0 1rem;
-    width: 100%;
+body {
+    /* Avoid collapsible margins that do not occur with flexbox */
+    margin: 0;
+    padding: 0.5rem;
 }
 
 #app > * > a {
@@ -16,13 +10,28 @@
     top: 0.5rem;
 }
 
-#app > * > div {
+/* Use a simple flexbox layout. */
+#app > .home {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+#app > .home > h1 {
+    width: 100%;
+}
+
+#app > .home > div {
     flex: 1 0 10rem;
     margin: 1rem;
 }
 
-#app > * > div:last-child textarea {
+#app > .home > div:last-child textarea {
     margin-top: 2.5rem;
+}
+
+h1, .about > p {
+    padding: 0 1rem;
 }
 
 input[type="file"] {

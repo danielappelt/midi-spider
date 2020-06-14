@@ -25,7 +25,7 @@
         [midi-port port])])))
 
 (defn home-panel []
-  [:div
+  [:div {:class "home"}
    [:h1 "MIDI Spider"]
    [:a {:href (routes/path-for ::about)} "About"]
    [:div
@@ -51,9 +51,18 @@
          :download "download.syx"} "Download"]]])
 
 (defn about-panel []
-  [:div
-   [:h1 "This is the About Page."]
-   [:a {:href (routes/path-for ::home)} "Home Page"]])
+  [:div {:class "about"}
+   [:h1 "MIDI Spider - About"]
+   [:a {:href (routes/path-for ::home)} "Home Page"]
+   [:p "MIDI Spider is a web application that enables easy data exchange with "
+    "MIDI devices. It can be used as a simple sysex librarian."]
+   [:p "Copyright (c) 2020 Daniel Appelt"]
+   [:p "It is released under the "
+    [:a {:href "https://github.com/danielappelt/midi-spider/blob/master/LICENSE"} "MIT license"]
+    ". Check out its "
+    [:a {:href "https://github.com/danielappelt/midi-spider"} "source code"]
+    "."]
+   ])
 
 (defn- show-panel [panel-name]
   (case panel-name

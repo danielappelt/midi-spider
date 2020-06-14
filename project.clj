@@ -1,4 +1,4 @@
-(defproject midi-spider "0.1.0"
+(defproject midi-spider "0.2.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/clojurescript "1.10.764"
                   :exclusions [com.google.javascript/closure-compiler-unshaded
