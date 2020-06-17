@@ -9,13 +9,12 @@
    (:active-panel db)))
 
 (defn int->hex [n]
+  "Convert number n into hexadecimal format. Please note that the result will only
+   be correct for numbers in the range [0, 15]."
   (str/join (take-last 2 (str "0" (.toString n 16)))))
 
-(defn hex->int [s]
-  (js/parseInt s 16))
-
-(defn binaryBuffer->text
-  [buffer]
+(defn binaryBuffer->text [buffer]
+  "Convert binary array into a string of hex numbers separated by a space."
   (str/join " " (map int->hex buffer)))
 
 (re-frame/reg-sub
