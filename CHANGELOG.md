@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Keep all messages received since last send operation
+- Add comments and remove unused method in subs.cljs
+- Remove duplicate singleRun config option
 - Update karma to 5.1.0
 - Provide information in the About panel
 
