@@ -17,6 +17,8 @@
    (assoc db :active-panel active-panel)))
 
 (defn- maplike->seq [map]
+  "Converts a maplike JavaScript object into a Clojure sequence. Use a real JavaScript
+   array as intermediate step."
   (let [arr #js []]
     (.forEach map #(.push arr %))
     (js->clj arr)))
@@ -27,7 +29,8 @@
    ;; Listen to port registrations and update the UI accordingly
    (set! (.-onstatechange midi) #(re-frame/dispatch [::update-midi-ports (.-port %)]))
    {:db (assoc db :midi midi)
-    :dispatch-n (list [::update-midi-ports] [::init-port-selection midi])}))
+    :dispatch-n (list [::update-midi-ports]
+                      [::init-port-selection midi])}))
  
 (re-frame/reg-event-db
  ::update-midi-ports
@@ -74,7 +77,9 @@
    ;; Free memory (https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL#Memory_management)
    (.revokeObjectURL js/URL (:download-url db))
    (assoc db
-          :in-buffer (maplike->seq data)
+          ;; Keep all messages received since last send operation
+          :in-buffer (concat (:in-buffer db) (maplike->seq data))
+          ;; TODO: Make all these messages available for download
           :download-url (.createObjectURL js/URL
                                           (js/Blob. #js [data]
                                                     #js {:type "application/octet-stream"})))))
@@ -125,11 +130,12 @@
  (fn [cofx [_ value]]
    {:dispatch [::change-out-buffer (map hex->int (text->hex-array value))]}))
 
-;; This event handler does not change db, use effects instead.
 (re-frame/reg-event-fx
  ::send-buffer
  (fn [{:keys [db]} _]
-   {::send-midi [(:output db) (:out-buffer db)]}))
+   ;; Clear in-buffer before sending next MIDI message
+   {:db (assoc db :in-buffer [])
+    ::send-midi [(:output db) (:out-buffer db)]}))
 
 (re-frame/reg-fx
  ::send-midi
