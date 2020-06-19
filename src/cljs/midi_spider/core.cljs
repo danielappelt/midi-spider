@@ -18,7 +18,8 @@
    for Web MIDI or if something else went wrong."
   [with-sysex]
   (if (nil? (.-requestMIDIAccess js/navigator))
-    (#(re-frame/dispatch [::events/midi-error "This browser does not support Web MIDI."]))
+    (#(re-frame/dispatch [::events/midi-error
+                          "This browser does not support Web MIDI (see https://caniuse.com/#feat=midi)."]))
     (-> js/navigator
         (.requestMIDIAccess #js {:sysex with-sysex})
         (.then #(re-frame/dispatch [::events/midi-access %])
