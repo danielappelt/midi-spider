@@ -1,5 +1,5 @@
 /out/
-/resources/public/js/compiled/
+#/resources/public/js/compiled/
 /target/
 /*-init.clj
 /*.log
@@ -14,3 +14,14 @@
 # shadow-cljs cache, port files
 /shadow-cljs.edn
 /.shadow-cljs/
+
+# Ignore everything that is not relevant to the final app
+/dev/
+/.dir-locals.el
+/karma.conf.js
+/package.json
+/package-lock.json
+/project.clj
+/resources/public/js/compiled/cljs-runtime/
+/src/
+/test/
