@@ -16,9 +16,10 @@
  (fn [db [_ active-panel]]
    (assoc db :active-panel active-panel)))
 
-(defn- maplike->seq [map]
+(defn- maplike->seq
   "Converts a maplike JavaScript object into a Clojure sequence. Use a real JavaScript
    array as intermediate step."
+  [map]
   (let [arr #js []]
     (.forEach map #(.push arr %))
     (js->clj arr)))
@@ -41,11 +42,19 @@
             :inputs (maplike->seq (.-inputs midi))
             :outputs (maplike->seq (.-outputs midi))))))
 
+(defn maplike-first
+  "Returns the first entry in a maplike JavaScript object, or nilEntry if m is empty.
+   nilEntry defaults to an empty JavaScript object."
+  ([m]
+   (maplike-first m #js {}))
+  ([m nilEntry]
+   (or (.-value (.next (.values m))) nilEntry)))
+
 (re-frame/reg-event-fx
  ::init-port-selection
  (fn [cofx [_ midi]]
-   {:dispatch-n (list [::change-input (.-value (.next (.values (.-inputs midi))))]
-                      [::change-output (.-value (.next (.values (.-outputs midi))))])}))
+   {:dispatch-n (list [::change-input (maplike-first (.-inputs midi))]
+                      [::change-output (maplike-first (.-outputs midi))])}))
 
 (re-frame/reg-event-fx
  ::midi-error
@@ -115,14 +124,16 @@
 (defn hex->int [s]
   (js/parseInt s 16))
 
-(defn strip-to-hex [s]
+(defn strip-to-hex
   "Strip everything from s that does not adhere to [a-fA-f0-9 ]. Remove
    leading spaces afterwards."
+  [s]
   (str/replace (str/replace s #"[^a-fA-f0-9 ]" "") #"^[ ]*" ""))
 
-(defn text->hex-array [text]
+(defn text->hex-array
   "Remove non-hex characters from text, add a trailing space in order to avoid
    an array containing the empty string and then split everything at >0 spaces."
+  [text]
   (str/split (str (strip-to-hex text) " ") #"[ ]+"))
 
 (re-frame/reg-event-fx
