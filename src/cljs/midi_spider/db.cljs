@@ -4,7 +4,7 @@
   {:active-panel :midi-spider.views/home
    :inputs []
    :input #js {}
-   :in-buffer []
+   :in-buffer (js/Uint8Array.)
    :download-url nil
    :outputs []
    :output #js {}

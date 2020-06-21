@@ -4,6 +4,7 @@
    [re-frame.core :as re-frame]
    [re-frame.loggers :refer [console]]
    [midi-spider.db :as db]
+   [midi-spider.util :as util]
    ))
 
 (re-frame/reg-event-db
@@ -15,14 +16,6 @@
  ::set-active-panel
  (fn [db [_ active-panel]]
    (assoc db :active-panel active-panel)))
-
-(defn- maplike->seq
-  "Converts a maplike JavaScript object into a Clojure sequence. Use a real JavaScript
-   array as intermediate step."
-  [map]
-  (let [arr #js []]
-    (.forEach map #(.push arr %))
-    (js->clj arr)))
 
 (re-frame/reg-event-fx
  ::midi-access
@@ -39,22 +32,14 @@
  (fn [db [_ port]]
    (let [midi (:midi db)]
      (assoc db
-            :inputs (maplike->seq (.-inputs midi))
-            :outputs (maplike->seq (.-outputs midi))))))
-
-(defn maplike-first
-  "Returns the first entry in a maplike JavaScript object, or nilEntry if m is empty.
-   nilEntry defaults to an empty JavaScript object."
-  ([m]
-   (maplike-first m #js {}))
-  ([m nilEntry]
-   (or (.-value (.next (.values m))) nilEntry)))
+            :inputs (util/maplike->seq (.-inputs midi))
+            :outputs (util/maplike->seq (.-outputs midi))))))
 
 (re-frame/reg-event-fx
  ::init-port-selection
  (fn [cofx [_ midi]]
-   {:dispatch-n (list [::change-input (maplike-first (.-inputs midi))]
-                      [::change-output (maplike-first (.-outputs midi))])}))
+   {:dispatch-n (list [::change-input (util/maplike-first (.-inputs midi))]
+                      [::change-output (util/maplike-first (.-outputs midi))])}))
 
 (re-frame/reg-event-fx
  ::midi-error
@@ -65,13 +50,10 @@
 
 ;; TODO: Put events and subscriptions that belong together into a common namespace.
 ;; see https://purelyfunctional.tv/guide/database-structure-in-re-frame/#events-and-subscriptions
-(defn port-by-id [ports id]
-  (first (filter #(= (.-id %) id) ports)))
-
 (re-frame/reg-event-fx
  ::select-input
  (fn [{:keys [db]} [_ id]]
-   {:dispatch [::change-input (port-by-id (:inputs db) id)]}))
+   {:dispatch [::change-input (util/port-by-id (:inputs db) id)]}))
 
 (re-frame/reg-event-db
  ::change-input
@@ -85,23 +67,31 @@
  (fn [db [_ data]]
    ;; Free memory (https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL#Memory_management)
    (.revokeObjectURL js/URL (:download-url db))
-   (assoc db
-          ;; Keep all messages received since last send operation
-          :in-buffer (concat (:in-buffer db) (maplike->seq data))
-          ;; TODO: Make all these messages available for download
-          :download-url (.createObjectURL js/URL
-                                          (js/Blob. #js [data]
-                                                    #js {:type "application/octet-stream"})))))
+   ;; Keep all messages received since last send operation
+   (let [all-data (util/concatenate-buffers (:in-buffer db) data)]
+     (assoc db
+            :in-buffer all-data
+            ;; We store the download URL in db in order to be able to revoke it later.
+            :download-url (.createObjectURL js/URL
+                                            (js/Blob. #js [all-data]
+                                                      #js {:type "application/octet-stream"}))))))
 
 (re-frame/reg-event-fx
  ::select-output
  (fn [{:keys [db]} [_ id]]
-   {:dispatch [::change-output (port-by-id (:outputs db) id)]}))
+   {:dispatch [::change-output (util/port-by-id (:outputs db) id)]}))
 
 (re-frame/reg-event-db
  ::change-output
  (fn [db [_ port]]
    (assoc db :output port)))
+
+(re-frame/reg-event-db
+ ::change-out-buffer
+ (fn [db [_ value]]
+   (assoc db
+          :out-buffer value
+          :out-update-time (.now js/Date))))
 
 (re-frame/reg-event-fx
  ::change-out-file
@@ -111,41 +101,19 @@
    ;; https://github.com/mido/mido/blob/1077ffeb412cfe7673e9cbc091ec093d1252d7f8/mido/syx.py#L9
    ;; See https://clojurescript.org/guides/promise-interop
    (.then (.arrayBuffer file)
-          #(re-frame/dispatch [::change-out-buffer (maplike->seq (js/Uint8Array. %))]))
+          #(re-frame/dispatch [::change-out-buffer (util/maplike->seq (js/Uint8Array. %))]))
    {}))
-
-(re-frame/reg-event-db
- ::change-out-buffer
- (fn [db [_ value]]
-   (assoc db
-          :out-buffer value
-          :out-update-time (.now js/Date))))
-
-(defn hex->int [s]
-  (js/parseInt s 16))
-
-(defn strip-to-hex
-  "Strip everything from s that does not adhere to [a-fA-f0-9 ]. Remove
-   leading spaces afterwards."
-  [s]
-  (str/replace (str/replace s #"[^a-fA-f0-9 ]" "") #"^[ ]*" ""))
-
-(defn text->hex-array
-  "Remove non-hex characters from text, add a trailing space in order to avoid
-   an array containing the empty string and then split everything at >0 spaces."
-  [text]
-  (str/split (str (strip-to-hex text) " ") #"[ ]+"))
 
 (re-frame/reg-event-fx
  ::change-out-buffer-text
  (fn [cofx [_ value]]
-   {:dispatch [::change-out-buffer (map hex->int (text->hex-array value))]}))
+   {:dispatch [::change-out-buffer (map util/hex->int (util/text->hex-array value))]}))
 
 (re-frame/reg-event-fx
  ::send-buffer
  (fn [{:keys [db]} _]
-   ;; Clear in-buffer before sending next MIDI message
-   {:db (assoc db :in-buffer [])
+   ;; Reset in-buffer before sending next MIDI message
+   {:db (assoc db :in-buffer (js/Uint8Array.))
     ::send-midi [(:output db) (:out-buffer db)]}))
 
 (re-frame/reg-fx

@@ -9,10 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix link element
+- Provide all messages in input buffer as download
+- Fix HTML link element
 
 ### Changed
 
+- Move test functions to util-test namespace
+- Move utility functions to util namespace
 - Improve MIDI error message
 - Upgrade node dependencies
 

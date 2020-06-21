@@ -1,23 +1,13 @@
 (ns midi-spider.subs
   (:require
    [clojure.string :as str]
-   [re-frame.core :as re-frame]))
+   [re-frame.core :as re-frame]
+   [midi-spider.util :as util]))
 
 (re-frame/reg-sub
  ::active-panel
  (fn [db]
    (:active-panel db)))
-
-(defn int->hex
-  "Convert number n into hexadecimal format. Please note that the result will only
-   be correct for numbers in the range [0, 15]."
-  [n]
-  (str/join (take-last 2 (str "0" (.toString n 16)))))
-
-(defn binaryBuffer->text
-  "Convert binary array into a string of hex numbers separated by a space."
-  [buffer]
-  (str/join " " (map int->hex buffer)))
 
 (re-frame/reg-sub
  ::inputs
@@ -53,10 +43,10 @@
  ::out-buffer-text
  (fn []
    (re-frame/subscribe [::out-buffer]))
- binaryBuffer->text)
+ util/binaryBuffer->text)
 
 (re-frame/reg-sub
  ::in-buffer-text
  (fn []
    (re-frame/subscribe [::in-buffer]))
- binaryBuffer->text)
+ (comp util/binaryBuffer->text util/maplike->seq))

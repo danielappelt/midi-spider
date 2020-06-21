@@ -29,7 +29,8 @@ It can be used as a simple sysex librarian.
 
 ## Technical Details
 
-MIDI Spider is a [re-frame](https://github.com/day8/re-frame) application.
+MIDI Spider is a [re-frame](https://github.com/day8/re-frame) application based on
+the excellent [re-frame-template](https://github.com/day8/re-frame-template).
 
 ### Project Overview
 
