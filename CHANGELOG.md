@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Fix karma lein aliases on Windows
+- Upgrade shadow-cljs to 2.10.19
+- Upgrade re-frame to 1.0.0
+- Upgrade binaryage/devtools to 1.0.2
+- Upgrade ClojureScript 1.10.773
+
 ## [0.2.1] - 2020-06-21
 
 ### Fixed

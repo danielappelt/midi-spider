@@ -1,12 +1,12 @@
-(defproject midi-spider "0.2.1"
+(defproject midi-spider "0.3.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [org.clojure/clojurescript "1.10.764"
+                 [org.clojure/clojurescript "1.10.773"
                   :exclusions [com.google.javascript/closure-compiler-unshaded
                                org.clojure/google-closure-library
                                org.clojure/google-closure-library-third-party]]
-                 [thheller/shadow-cljs "2.9.3"]
+                 [thheller/shadow-cljs "2.10.19"]
                  [reagent "0.10.0"]
-                 [re-frame "0.12.0"]
+                 [re-frame "1.0.0"]
                  [bidi "2.1.6"]]
 
   :plugins [[lein-shadow "0.2.0"]
@@ -23,11 +23,6 @@
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"
                                     "test/js"]
-
-
-  :shell {:commands {"open" {:windows ["cmd" "/c" "start"]
-                             :macosx  "open"
-                             :linux   "xdg-open"}}}
 
   :shadow-cljs {:nrepl {:port 8777}
                 
@@ -53,6 +48,12 @@
                           :ns-regexp "-test$"
                           :output-to "target/karma-test.js"}}}
 
+  :shell {:commands {"karma" {:windows         ["cmd" "/c" "karma"]
+                              :default-command "karma"}
+                     "open"  {:windows         ["cmd" "/c" "start"]
+                              :macosx          "open"
+                              :linux           "xdg-open"}}}
+
   :aliases {"dev"          ["with-profile" "dev" "do"
                             ["shadow" "watch" "app"]]
             "prod"         ["with-profile" "prod" "do"
@@ -66,7 +67,7 @@
 
   :profiles
   {:dev
-   {:dependencies [[binaryage/devtools "1.0.0"]]
+   {:dependencies [[binaryage/devtools "1.0.2"]]
     :source-paths ["dev"]}
 
    :prod {}
