@@ -4,12 +4,12 @@
                   :exclusions [com.google.javascript/closure-compiler-unshaded
                                org.clojure/google-closure-library
                                org.clojure/google-closure-library-third-party]]
-                 [thheller/shadow-cljs "2.10.19"]
+                 [thheller/shadow-cljs "2.11.4"]
                  [reagent "0.10.0"]
-                 [re-frame "1.0.0"]
+                 [re-frame "1.1.1"]
                  [bidi "2.1.6"]]
 
-  :plugins [[lein-shadow "0.2.0"]
+  :plugins [[lein-shadow "0.3.1"]
             
             [lein-shell "0.5.0"]]
 
@@ -54,14 +54,27 @@
                               :macosx          "open"
                               :linux           "xdg-open"}}}
 
-  :aliases {"dev"          ["with-profile" "dev" "do"
-                            ["shadow" "watch" "app"]]
-            "prod"         ["with-profile" "prod" "do"
+  :aliases {"dev"          ["do" 
+                            ["shell" "echo" "\"DEPRECATED: Please use lein watch instead.\""]
+                            ["watch"]]
+            "watch"        ["with-profile" "dev" "do"
+                            ["shadow" "watch" "app" "browser-test" "karma-test"]]
+
+            "prod"         ["do"
+                            ["shell" "echo" "\"DEPRECATED: Please use lein release instead.\""]
+                            ["release"]]
+
+            "release"      ["with-profile" "prod" "do"
                             ["shadow" "release" "app"]]
+
             "build-report" ["with-profile" "prod" "do"
                             ["shadow" "run" "shadow.cljs.build-report" "app" "target/build-report.html"]
                             ["shell" "open" "target/build-report.html"]]
-            "karma"        ["with-profile" "prod" "do"
+
+            "karma"        ["do"
+                            ["shell" "echo" "\"DEPRECATED: Please use lein ci instead.\""]
+                            ["ci"]]
+            "ci"           ["with-profile" "prod" "do"
                             ["shadow" "compile" "karma-test"]
                             ["shell" "./karma" "start" "--single-run" "--reporters" "junit,dots"]]}
 
