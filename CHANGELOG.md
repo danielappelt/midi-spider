@@ -9,13 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Upgrade re-frame-template to 1.3.0
+- Upgrade re-frame-template to 1.5.0
   - Upgrade [lein-shadow to 0.3.1](https://gitlab.com/nikperic/lein-shadow/-/blob/master/CHANGELOG.md#030-2020-09-22)
-  - Upgrade shadow-cljs to 2.11.4
-  - Upgrade karma to 5.2.3
-  - Upgrade [re-frame to 1.1.1](http://day8.github.io/re-frame/releases/2020/#110-2020-08-24)
+  - Upgrade shadow-cljs to 2.11.24
+  - Upgrade karma to 6.2.0
+  - Upgrade [re-frame to 1.2.0](http://day8.github.io/re-frame/releases/2021/#120-2021-02-25)
   - Upgrade binaryage/devtools to 1.0.2
   - Upgrade ClojureScript 1.10.773
+  - Fix cider integration.
 
 ## [0.2.1] - 2020-06-21
 

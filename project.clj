@@ -1,17 +1,18 @@
 (defproject midi-spider "0.3.0-SNAPSHOT"
-  :dependencies [[org.clojure/clojure "1.10.1"]
+  :dependencies [[org.clojure/clojure "1.10.3"]
                  [org.clojure/clojurescript "1.10.773"
                   :exclusions [com.google.javascript/closure-compiler-unshaded
                                org.clojure/google-closure-library
                                org.clojure/google-closure-library-third-party]]
-                 [thheller/shadow-cljs "2.11.4"]
-                 [reagent "0.10.0"]
-                 [re-frame "1.1.1"]
+                 [thheller/shadow-cljs "2.11.24"]
+                 [reagent "1.0.0"]
+                 [re-frame "1.2.0"]
                  [bidi "2.1.6"]]
 
-  :plugins [[lein-shadow "0.3.1"]
-            
-            [lein-shell "0.5.0"]]
+  :plugins [[cider/cider-nrepl "0.25.6"]
+            [lein-shadow "0.3.1"]
+            [lein-shell "0.5.0"]
+            [lein-pprint "1.3.2"]]
 
   :min-lein-version "2.9.0"
 
@@ -25,7 +26,7 @@
                                     "test/js"]
 
   :shadow-cljs {:nrepl {:port 8777}
-                
+
                 :builds {:app {:target :browser
                                :output-dir "resources/public/js/compiled"
                                :asset-path "/js/compiled"
@@ -54,7 +55,7 @@
                               :macosx          "open"
                               :linux           "xdg-open"}}}
 
-  :aliases {"dev"          ["do" 
+  :aliases {"dev"          ["do"
                             ["shell" "echo" "\"DEPRECATED: Please use lein watch instead.\""]
                             ["watch"]]
             "watch"        ["with-profile" "dev" "do"
@@ -84,7 +85,7 @@
     :source-paths ["dev"]}
 
    :prod {}
-   
+
 }
 
   :prep-tasks [])
